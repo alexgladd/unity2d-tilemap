@@ -18,6 +18,9 @@ public class TileMapMesh : MonoBehaviour {
 	}
 	
 	public void BuildMapMesh (int width, int height, float tileSize = 1f) {
+		// purge existing
+		CleanMesh();
+	
 		// sizing
 		int numTiles = width * height;
 		int numVertices = numTiles * 4;
@@ -70,6 +73,7 @@ public class TileMapMesh : MonoBehaviour {
 				vertices[vStartIdx + 3] = tilePos + v3Offset;
 				
 				// set tile uvs
+				// TODO replace with uvs from some "tile data"
 				uvs[vStartIdx] = new Vector2(0f, 1f);
 				uvs[vStartIdx + 1] = new Vector2(0.25f, 1f);
 				uvs[vStartIdx + 2] = new Vector2(0.25f, 0.75f);
@@ -101,5 +105,12 @@ public class TileMapMesh : MonoBehaviour {
 		
 		// assign the mesh
 		meshFilter.mesh = tileMesh;
+	}
+	
+	void CleanMesh () {
+		if (meshFilter.sharedMesh) {
+			Debug.Log("Clearing mesh filter");
+			meshFilter.sharedMesh.Clear();
+		}
 	}
 }
