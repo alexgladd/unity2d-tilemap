@@ -25,7 +25,6 @@ public class TileMapMesh : MonoBehaviour {
 		float halfSize = tileSize / 2f;
 		
 		// vert offsets
-		Vector3 origin = transform.position;
 		Vector3 v0Offset = new Vector3(-halfSize, halfSize, 0f);
 		Vector3 v1Offset = new Vector3(halfSize, halfSize, 0f);
 		Vector3 v2Offset = new Vector3(halfSize, -halfSize, 0f);
@@ -57,7 +56,7 @@ public class TileMapMesh : MonoBehaviour {
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
 				// calc tile world position
-				Vector3 tilePos = new Vector3(w * tileSize, h * tileSize, 0f) + origin;
+				Vector3 tilePos = new Vector3(w * tileSize, h * tileSize, 0f);
 				
 				// calc tile indices
 				int tileIdx = (h * width) + w;
