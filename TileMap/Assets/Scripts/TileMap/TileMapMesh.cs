@@ -17,7 +17,7 @@ public class TileMapMesh : MonoBehaviour {
 		meshCollider = GetComponent<MeshCollider>();
 	}
 	
-	public void BuildMapMesh (int width, int height, float tileSize = 1f) {
+	public void BuildMapMesh (TileMapData mapData, int width, int height, float tileSize = 1f) {
 		// purge existing
 		CleanMesh();
 	
@@ -62,9 +62,12 @@ public class TileMapMesh : MonoBehaviour {
 				Vector3 tilePos = new Vector3(w * tileSize, h * tileSize, 0f);
 				
 				// calc tile indices
-				int tileIdx = (h * width) + w;
+				int tileIdx = mapData.TileIndex(h, w);
 				int vStartIdx = tileIdx * 4;	// 4 verts per tile
 				int tStartIdx = tileIdx * 6;	// 6 triangle verts per tile
+				
+				// get tile
+				Tile t = mapData.GetTile(tileIdx);
 				
 				// set tile vertices
 				vertices[vStartIdx]     = tilePos + v0Offset;
@@ -74,10 +77,10 @@ public class TileMapMesh : MonoBehaviour {
 				
 				// set tile uvs
 				// TODO replace with uvs from some "tile data"
-				uvs[vStartIdx] = new Vector2(0f, 1f);
-				uvs[vStartIdx + 1] = new Vector2(0.25f, 1f);
-				uvs[vStartIdx + 2] = new Vector2(0.25f, 0.75f);
-				uvs[vStartIdx + 3] = new Vector2(0f, 0.75f);
+				uvs[vStartIdx] = t.UV(0);
+				uvs[vStartIdx + 1] = t.UV(1);
+				uvs[vStartIdx + 2] = t.UV(2);
+				uvs[vStartIdx + 3] = t.UV(3);
 				
 				// set tile triangles
 				// t0

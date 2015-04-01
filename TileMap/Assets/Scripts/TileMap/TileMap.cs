@@ -5,6 +5,8 @@ using System.Collections;
 [RequireComponent(typeof(TileMapMesh))]
 public class TileMap : MonoBehaviour {
 	
+	[Tooltip("Data provider for tilemap")]
+	public TileMapDataProvider dataProvider;
 	[Tooltip("Map width in tiles")]
 	public int width = 1;
 	[Tooltip("Map height in tiles")]
@@ -22,6 +24,6 @@ public class TileMap : MonoBehaviour {
 	}
 	
 	public void BuildMap () {
-		tileMesh.BuildMapMesh(width, height, tileSize);
+		tileMesh.BuildMapMesh(dataProvider.MapData(), width, height, tileSize);
 	}
 }
