@@ -64,7 +64,9 @@ public class TileMapData {
 	}
 	
 	void CheckTileIndex (int tileIndex) {
-		if (tileIndex < 0 || tileIndex >= mapData.Length) {
+		if (mapData.Length == 0) {
+			throw new TileMapException("Tile index out of range " + tileIndex + " (empty)");
+		} else if (tileIndex < 0 || tileIndex >= mapData.Length) {
 			throw new TileMapException("Tile index out of range " + tileIndex +
 			                           " (0-" + (mapData.Length - 1) + ")");
 		}

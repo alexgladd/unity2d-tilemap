@@ -17,12 +17,27 @@ public class TileMapMesh : MonoBehaviour {
 		meshCollider = GetComponent<MeshCollider>();
 	}
 	
-	public void BuildMapMesh (TileMapData mapData, int width, int height, float tileSize = 1f) {
+	public void BuildMapMesh (TileMapData mapData, float tileSize = 1f) {
+		BuildMapMesh(mapData, 0, 0, mapData.cols, mapData.rows, tileSize);
+	}
+	
+	public void BuildMapMesh (TileMapData mapData,
+			int colOffset, int rowOffset, int width, int height, float tileSize) {
+			
 		// purge existing
 		CleanMesh();
+		
+		// count number of actual tiles
+		int numTiles = 0;
+		for (int r = rowOffset; r < (rowOffset + height); r++) {
+			for (int c = colOffset; c < (colOffset + width); c++) {
+				if (mapData.GetTile(r, c) != null) {
+					numTiles++;
+				}
+			}
+		}
 	
 		// sizing
-		int numTiles = width * height;
 		int numVertices = numTiles * 4;
 		int numTriangles = numTiles * 2 * 3;
 		float halfSize = tileSize / 2f;
@@ -56,41 +71,48 @@ public class TileMapMesh : MonoBehaviour {
 		 *  Triangle 1 = [v0, v2, v3]
 		 */
 		
-		for (int h = 0; h < height; h++) {
-			for (int w = 0; w < width; w++) {
-				// calc tile world position
-				Vector3 tilePos = new Vector3(w * tileSize, h * tileSize, 0f);
-				
-				// calc tile indices
-				int tileIdx = mapData.TileIndex(h, w);
-				int vStartIdx = tileIdx * 4;	// 4 verts per tile
-				int tStartIdx = tileIdx * 6;	// 6 triangle verts per tile
-				
+		int curVertIdx = 0;
+		int curTriIdx = 0;
+		
+		// start at 0,0 building up rows and columns of tiles from our current
+		// transform origin
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				// get tile index
+				int tileIdx = mapData.TileIndex(r + rowOffset, c + colOffset);
 				// get tile
 				Tile t = mapData.GetTile(tileIdx);
 				
-				// set tile vertices
-				vertices[vStartIdx]     = tilePos + v0Offset;
-				vertices[vStartIdx + 1] = tilePos + v1Offset;
-				vertices[vStartIdx + 2] = tilePos + v2Offset;
-				vertices[vStartIdx + 3] = tilePos + v3Offset;
-				
-				// set tile uvs
-				// TODO replace with uvs from some "tile data"
-				uvs[vStartIdx] = t.UV(0);
-				uvs[vStartIdx + 1] = t.UV(1);
-				uvs[vStartIdx + 2] = t.UV(2);
-				uvs[vStartIdx + 3] = t.UV(3);
-				
-				// set tile triangles
-				// t0
-				triangles[tStartIdx]     = (vStartIdx);
-				triangles[tStartIdx + 1] = (vStartIdx + 1);
-				triangles[tStartIdx + 2] = (vStartIdx + 2);
-				// t1
-				triangles[tStartIdx + 3] = (vStartIdx);
-				triangles[tStartIdx + 4] = (vStartIdx + 2);
-				triangles[tStartIdx + 5] = (vStartIdx + 3);
+				// only render mesh and texture here if there's actually a tile
+				if (t != null) {
+					// calc tile world position
+					Vector3 tilePos = new Vector3(c * tileSize, r * tileSize, 0f);
+					
+					// set tile vertices
+					vertices[curVertIdx]     = tilePos + v0Offset;
+					vertices[curVertIdx + 1] = tilePos + v1Offset;
+					vertices[curVertIdx + 2] = tilePos + v2Offset;
+					vertices[curVertIdx + 3] = tilePos + v3Offset;
+					
+					// set tile uvs
+					uvs[curVertIdx] = t.UV(0);
+					uvs[curVertIdx + 1] = t.UV(1);
+					uvs[curVertIdx + 2] = t.UV(2);
+					uvs[curVertIdx + 3] = t.UV(3);
+					
+					// set tile triangles
+					// t0
+					triangles[curTriIdx]     = (curVertIdx);
+					triangles[curTriIdx + 1] = (curVertIdx + 1);
+					triangles[curTriIdx + 2] = (curVertIdx + 2);
+					// t1
+					triangles[curTriIdx + 3] = (curVertIdx);
+					triangles[curTriIdx + 4] = (curVertIdx + 2);
+					triangles[curTriIdx + 5] = (curVertIdx + 3);
+					
+					curVertIdx += 4;
+					curTriIdx += 6;
+				}
 			}
 		}
 		

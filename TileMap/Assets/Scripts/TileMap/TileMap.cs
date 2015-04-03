@@ -7,9 +7,13 @@ public class TileMap : MonoBehaviour {
 	
 	[Tooltip("Data provider for tilemap")]
 	public TileMapDataProvider dataProvider;
-	[Tooltip("Map width in tiles")]
+	[Tooltip("Horizontal offset into the tilemap, in tiles")]
+	public int colOffset = 0;
+	[Tooltip("Vertical offset into the tilemap, in tiles")]
+	public int rowOffset = 0;
+	[Tooltip("Width of map to render, in tiles")]
 	public int width = 1;
-	[Tooltip("Map height in tiles")]
+	[Tooltip("Height of map to render, in tiles")]
 	public int height = 1;
 	[Tooltip("Tile size in world units")]
 	public float tileSize = 1f;
@@ -24,6 +28,28 @@ public class TileMap : MonoBehaviour {
 	}
 	
 	public void BuildMap () {
-		tileMesh.BuildMapMesh(dataProvider.MapData(), width, height, tileSize);
+		if (SanityCheck()) {
+			tileMesh.BuildMapMesh(dataProvider.MapData(), colOffset, rowOffset, width, height, tileSize);
+		} else {
+			Debug.LogError("TileMap setup did not pass sanity check (please double-check offsets, width, and height " +
+					"against underlying tile map data)");
+		}
+	}
+	
+	bool SanityCheck () {
+		TileMapData data = dataProvider.MapData();
+	
+		if (width > data.cols) {
+			return false;
+		} else if (height > data.rows) {
+			return false;
+		} else if (colOffset >= data.cols) {
+			return false;
+		} else if (rowOffset >= data.rows) {
+			return false;
+		} else {
+			return true;
+		}
+		return true;
 	}
 }

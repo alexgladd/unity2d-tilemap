@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class RandomTileProvider : TileMapDataProvider {
 
 	public int numTiles;
@@ -33,8 +34,6 @@ public class RandomTileProvider : TileMapDataProvider {
 		for (int r = 0; r < numRows; r++) {
 			for (int c = 0; c < numCols; c++) {
 				byte id = (byte)Random.Range(1, 5);
-				
-				//Debug.Log("Setting tile data [" + r + ", " + c + "] = 0x" + id.ToString("X2"));
 				
 				data.SetTileData(r, c, id);
 			}
