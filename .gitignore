@@ -3,6 +3,8 @@
 # =============== #
 Temp/
 Library/
+UnityVS/
+UnityVS.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
