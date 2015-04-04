@@ -7,11 +7,11 @@ public abstract class TileMapDataProvider : MonoBehaviour {
     [Tooltip("Tile atlas settings (optional)")]
     public TileMapAtlas tileAtlas;
 
-	private TileMapData data;
-	
-	void Awake () {
+    private TileMapData data;
+
+    void Awake () {
         InitMap();
-	}
+    }
 
     void InitMap () {
         // init atlas if configured
@@ -28,19 +28,19 @@ public abstract class TileMapDataProvider : MonoBehaviour {
 
         BuildMapData(data);
     }
-	
-	protected abstract void LoadMap (out int rows, out int cols, out byte initialTileID);
-	
-	protected abstract void BuildMapData (TileMapData data);
-	
-	public TileMapData MapData () {
+
+    protected abstract void LoadMap (out int rows, out int cols, out byte initialTileID);
+
+    protected abstract void BuildMapData (TileMapData data);
+
+    public TileMapData MapData () {
         if (data == null) {
             Debug.Log("JIT map init");
             InitMap();
         }
 
-		return data;
-	}
+        return data;
+    }
 
     public TileMapAtlas MapAtlas () {
         return tileAtlas;
