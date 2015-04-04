@@ -7,6 +7,9 @@ using System.Collections;
 [RequireComponent(typeof(MeshCollider))]
 public class TileMapMesh : MonoBehaviour {
 
+    [Tooltip("Use tile mesh as collider?")]
+    public bool useCollider = true;
+
 	private MeshRenderer meshRenderer;
 	private MeshFilter meshFilter;
 	private MeshCollider meshCollider;
@@ -130,7 +133,22 @@ public class TileMapMesh : MonoBehaviour {
 		
 		// assign the mesh
 		meshFilter.mesh = tileMesh;
+        UpdateCollider();
 	}
+
+    public void UseMeshCollider (bool useCollider) {
+        this.useCollider = useCollider;
+
+        UpdateCollider();
+    }
+
+    void UpdateCollider () {
+        if (useCollider) {
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+        } else {
+            meshCollider.sharedMesh.Clear();
+        }
+    }
 	
 	void CleanMesh () {
 		if (meshFilter.sharedMesh) {

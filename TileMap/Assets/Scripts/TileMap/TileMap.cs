@@ -50,6 +50,5 @@ public class TileMap : MonoBehaviour {
 		} else {
 			return true;
 		}
-		return true;
 	}
 }
