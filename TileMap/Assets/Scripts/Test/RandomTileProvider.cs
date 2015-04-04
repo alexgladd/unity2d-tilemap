@@ -3,7 +3,6 @@ using System.Collections;
 
 public class RandomTileProvider : TileMapDataProvider {
 
-	public int numTiles;
 	public int numRows, numCols;
 	
 	protected override void LoadMap (out int rows, out int cols, out byte initialTileID) {
@@ -13,15 +12,19 @@ public class RandomTileProvider : TileMapDataProvider {
 	}
 	
 	protected override void BuildMapData (TileMapData data) {
+        if (!tileAtlas) {
+            throw new TileMapException("Need to setup tile map atlas!");
+        }
+
 		// create tiles
 		Tile t0 = new Tile(0x01);
-		t0.SetTileUvs(new Vector2(0f, 1f), new Vector2(0.25f, 1f), new Vector2(0.25f, 0.75f), new Vector2(0f, 0.75f));
+		t0.SetTileUvs(tileAtlas.UVsForTile(0));
 		Tile t1 = new Tile(0x02);
-		t1.SetTileUvs(new Vector2(0.25f, 1f), new Vector2(0.5f, 1f), new Vector2(0.5f, 0.75f), new Vector2(0.25f, 0.75f));
+        t1.SetTileUvs(tileAtlas.UVsForTile(1));
 		Tile t2 = new Tile(0x03);
-		t2.SetTileUvs(new Vector2(0.5f, 1f), new Vector2(0.75f, 1f), new Vector2(0.75f, 0.75f), new Vector2(0.5f, 0.75f));
+        t2.SetTileUvs(tileAtlas.UVsForTile(2));
 		Tile t3 = new Tile(0x04);
-		t3.SetTileUvs(new Vector2(0.75f, 1f), new Vector2(1f, 1f), new Vector2(1f, 0.75f), new Vector2(0.75f, 0.75f));
+        t3.SetTileUvs(tileAtlas.UVsForTile(3));
 		
 		data.AddMapTile(t0);
 		data.AddMapTile(t1);

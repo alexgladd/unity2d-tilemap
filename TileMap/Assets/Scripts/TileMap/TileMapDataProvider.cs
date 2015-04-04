@@ -4,6 +4,9 @@ using System.Collections;
 [ExecuteInEditMode]
 public abstract class TileMapDataProvider : MonoBehaviour {
 
+    [Tooltip("Tile atlas settings (optional)")]
+    public TileMapAtlas tileAtlas;
+
 	private TileMapData data;
 	
 	void Awake () {
@@ -11,6 +14,11 @@ public abstract class TileMapDataProvider : MonoBehaviour {
 	}
 
     void InitMap () {
+        // init atlas if configured
+        if (tileAtlas) {
+            tileAtlas.Setup();
+        }
+
         int numRows = 1, numCols = 1;
         byte initialID = Tile.NO_TILE;
 
@@ -33,4 +41,8 @@ public abstract class TileMapDataProvider : MonoBehaviour {
 
 		return data;
 	}
+
+    public TileMapAtlas MapAtlas () {
+        return tileAtlas;
+    }
 }

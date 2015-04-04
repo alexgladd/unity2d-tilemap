@@ -17,17 +17,26 @@ public class TileMap : MonoBehaviour {
 	public int height = 1;
 	[Tooltip("Tile size in world units")]
 	public float tileSize = 1f;
+    [Tooltip("Automatically build map on Start?")]
+    public bool buildOnStart = true;
 	
 	private TileMapMesh tileMesh;
 	
 	// Use this for initialization
 	void Start () {
 		tileMesh = GetComponent<TileMapMesh>();
-		
-		BuildMap();
+
+        if (buildOnStart) {
+            BuildMap();
+        }
 	}
 	
 	public void BuildMap () {
+        // set material from data provider if setup
+        if (dataProvider.MapAtlas()) {
+            tileMesh.SetTileMaterial(dataProvider.MapAtlas().Material());
+        }
+
 		if (SanityCheck()) {
 			tileMesh.BuildMapMesh(dataProvider.MapData(), colOffset, rowOffset, width, height, tileSize);
 		} else {

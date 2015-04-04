@@ -19,6 +19,10 @@ public class TileMapMesh : MonoBehaviour {
 		meshFilter = GetComponent<MeshFilter>();
 		meshCollider = GetComponent<MeshCollider>();
 	}
+
+    public void SetTileMaterial (Material tileMat) {
+        meshRenderer.material = tileMat;
+    }
 	
 	public void BuildMapMesh (TileMapData mapData, float tileSize = 1f) {
 		BuildMapMesh(mapData, 0, 0, mapData.cols, mapData.rows, tileSize);

@@ -9,6 +9,12 @@
 # Declare files that will always have CRLF line endings on checkout.
 *.sln text eol=crlf
 
+# Unity files that should be LF
+*.meta text eol=lf
+*.unity text eol=lf
+*.asset text eol=lf
+*.prefab text eol=lf
+
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.xcf binary
