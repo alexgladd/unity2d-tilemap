@@ -5,6 +5,9 @@
 # to native line endings on checkout.
 *.cs text
 *.js text
+*.boo text
+*.glsl text
+*.shader text
 
 # Declare files that will always have CRLF line endings on checkout.
 *.sln text eol=crlf
@@ -14,6 +17,7 @@
 *.unity text eol=lf
 *.asset text eol=lf
 *.prefab text eol=lf
+*.mat text eol=lf
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary
