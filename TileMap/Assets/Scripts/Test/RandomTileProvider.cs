@@ -4,6 +4,7 @@ using System.Collections;
 public class RandomTileProvider : TileMapDataProvider {
 
     public int numRows, numCols;
+    public bool includeEmpty;
 
     protected override void LoadMap (out int rows, out int cols, out byte initialTileID) {
         rows = numRows;
@@ -35,7 +36,13 @@ public class RandomTileProvider : TileMapDataProvider {
         Debug.Log("Generating random tile data...");
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
-                byte id = (byte)Random.Range(0, 5);
+                byte id;
+
+                if (includeEmpty) {
+                    id = (byte)Random.Range(0, 5);
+                } else {
+                    id = (byte)Random.Range(1, 5);
+                }
 
                 data.SetTileData(r, c, id);
             }
