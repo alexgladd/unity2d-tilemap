@@ -32,7 +32,7 @@ public class TileMapMesh : MonoBehaviour {
             int colOffset, int rowOffset, int width, int height, float tileSize) {
 
         // purge existing
-        CleanMesh();
+        ClearMeshes();
 
         // count number of actual tiles
         int numTiles = 0;
@@ -140,6 +140,11 @@ public class TileMapMesh : MonoBehaviour {
         UpdateCollider();
     }
 
+    public void ClearMapMesh () {
+        ClearMeshes();
+        ClearMaterials();
+    }
+
     public void UseMeshCollider (bool useCollider) {
         this.useCollider = useCollider;
 
@@ -147,17 +152,29 @@ public class TileMapMesh : MonoBehaviour {
     }
 
     void UpdateCollider () {
+        if (meshCollider.sharedMesh) {
+            meshCollider.sharedMesh.Clear();
+        }
+
         if (useCollider) {
             meshCollider.sharedMesh = meshFilter.sharedMesh;
-        } else {
+        }
+    }
+
+    void ClearMeshes () {
+        if (meshFilter.sharedMesh) {
+            meshFilter.sharedMesh.Clear();
+        }
+
+        if (meshCollider.sharedMesh) {
             meshCollider.sharedMesh.Clear();
         }
     }
 
-    void CleanMesh () {
-        if (meshFilter.sharedMesh) {
-            Debug.Log("Clearing mesh filter");
-            meshFilter.sharedMesh.Clear();
+    void ClearMaterials () {
+        if (meshRenderer.sharedMaterial) {
+            //Destroy(meshRenderer.material);
+            meshRenderer.sharedMaterial = null;
         }
     }
 }

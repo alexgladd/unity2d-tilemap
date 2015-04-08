@@ -45,6 +45,10 @@ public class TileMap : MonoBehaviour {
         }
     }
 
+    public void ClearMap () {
+        tileMesh.ClearMapMesh();
+    }
+
     bool SanityCheck () {
         TileMapData data = dataProvider.MapData();
 
