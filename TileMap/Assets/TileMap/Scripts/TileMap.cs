@@ -32,6 +32,8 @@ public class TileMap : MonoBehaviour {
     }
 
     public void BuildMap () {
+        if (dataProvider == null) return;
+
         // set material from data provider if setup
         if (dataProvider.MapAtlas()) {
             tileMesh.SetTileMaterial(dataProvider.MapAtlas().Material());
