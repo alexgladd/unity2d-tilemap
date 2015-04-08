@@ -49,6 +49,11 @@ public class TileMapMesh : MonoBehaviour {
         int numTriangles = numTiles * 2 * 3;
         float halfSize = tileSize / 2f;
 
+        // warn if we hit the Unity vert limit
+        if (numVertices > 65000) {
+            throw new TileMapException("Number of required vertices (" + numVertices + ") exceeds Unity max of 65000!");
+        }
+
         // vert offsets
         Vector3 v0Offset = new Vector3(-halfSize, halfSize, 0f);
         Vector3 v1Offset = new Vector3(halfSize, halfSize, 0f);
